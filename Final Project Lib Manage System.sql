@@ -258,13 +258,13 @@ BEGIN
 	;
 
 
-	SELECT tbl_bookCopies.no_of_copies FROM tbl_bookCopies WHERE tbl_bookCopies.book_id = 1 AND tbl_bookCopies.branch_id = 1;
+	SELECT tbl_bookCopies.no_of_copies, tbl_libraryBranch.branch_name, tbl_book.book_title FROM tbl_bookCopies INNER JOIN tbl_libraryBranch ON tbl_libraryBranch.branch_id = tbl_bookCopies.branch_id INNER JOIN tbl_book ON tbl_book.book_id = tbl_bookCopies.book_id WHERE tbl_bookCopies.book_id = 1 AND tbl_libraryBranch.branch_name = 'Sharpstown';
 
-	SELECT tbl_bookCopies.no_of_copies, tbl_bookCopies.branch_id FROM tbl_bookCopies WHERE tbl_bookCopies.book_id = 1;
+	SELECT tbl_bookCopies.no_of_copies, tbl_libraryBranch.branch_name, tbl_book.book_title FROM tbl_bookCopies INNER JOIN tbl_libraryBranch ON tbl_libraryBranch.branch_id = tbl_bookCopies.branch_id INNER JOIN tbl_book ON tbl_book.book_id = tbl_bookCopies.book_id WHERE tbl_book.book_title = 'The Lost Tribe';
 
 	SELECT tbl_borrower.borrower_name FROM tbl_borrower WHERE NOT EXISTS (SELECT * FROM tbl_bookLoans WHERE tbl_borrower.card_no = tbl_bookLoans.card_no);
 
-	SELECT tbl_book.book_title, tbl_borrower.borrower_name, tbl_borrower.borrower_address FROM tbl_book INNER JOIN tbl_bookLoans ON tbl_book.book_id = tbl_bookLoans.book_id INNER JOIN tbl_borrower ON tbl_borrower.card_no = tbl_bookLoans.card_no WHERE tbl_bookLoans.branch_id = 1 AND tbl_bookLoans.due_date = '2018-04-08';
+	SELECT tbl_book.book_title, tbl_borrower.borrower_name, tbl_borrower.borrower_address, tbl_libraryBranch.branch_name FROM tbl_book INNER JOIN tbl_bookLoans ON tbl_book.book_id = tbl_bookLoans.book_id INNER JOIN tbl_borrower ON tbl_borrower.card_no = tbl_bookLoans.card_no INNER JOIN tbl_libraryBranch ON tbl_libraryBranch.branch_id = tbl_bookLoans.branch_id WHERE tbl_libraryBranch.branch_name = 'Sharpstown' AND tbl_bookLoans.due_date = '2018-04-08';
 
 	SELECT tbl_libraryBranch.branch_name, COUNT(tbl_bookLoans.branch_id)
 	FROM tbl_libraryBranch JOIN tbl_bookLoans ON tbl_libraryBranch.branch_id = tbl_bookLoans.branch_id
@@ -275,7 +275,7 @@ BEGIN
 	GROUP BY tbl_borrower.borrower_name, tbl_borrower.borrower_address
 	HAVING COUNT(tbl_bookLoans.card_no) > 5 ORDER BY tbl_borrower.borrower_name; 
 
-	SELECT tbl_book.book_title, tbl_bookCopies.no_of_copies FROM tbl_book INNER JOIN tbl_bookCopies ON tbl_book.book_id = tbl_bookCopies.book_id INNER JOIN tbl_bookAuthors ON tbl_bookCopies.book_id = tbl_bookAuthors.book_id WHERE tbl_bookAuthors.author_name = 'Stephen King' AND tbl_bookCopies.branch_id = 2;
+	SELECT tbl_book.book_title, tbl_bookCopies.no_of_copies, tbl_bookAuthors.author_name, tbl_libraryBranch.branch_name FROM tbl_book INNER JOIN tbl_bookCopies ON tbl_book.book_id = tbl_bookCopies.book_id INNER JOIN tbl_bookAuthors ON tbl_bookCopies.book_id = tbl_bookAuthors.book_id INNER JOIN tbl_libraryBranch ON tbl_libraryBranch.branch_id = tbl_bookCopies.branch_id WHERE tbl_bookAuthors.author_name = 'Stephen King' AND tbl_libraryBranch.branch_name = 'Central';
 	
 	
 
